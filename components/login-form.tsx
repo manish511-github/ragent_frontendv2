@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Eye, EyeOff, Mail, Lock, AlertCircle, CheckCircle } from "lucide-react"
+import Link from "next/link"
 
 interface FormData {
   email: string
@@ -19,7 +20,7 @@ interface FormErrors {
   password?: string
 }
 
-// Google Icon Component
+// Google Icon Component (re-used from signup-form)
 const GoogleIcon = () => (
   <svg className="size-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
@@ -41,7 +42,7 @@ const GoogleIcon = () => (
   </svg>
 )
 
-export default function LoginForm() {
+export function LoginForm() {
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
@@ -116,7 +117,7 @@ export default function LoginForm() {
           <CheckCircle className="size-16 text-green-500" />
         </motion.div>
         <h3 className="text-xl font-semibold">Login Successful!</h3>
-        <p className="text-muted-foreground">Welcome back! Redirecting to your dashboard...</p>
+        <p className="text-muted-foreground">You are now logged in. Redirecting...</p>
       </motion.div>
     )
   }
@@ -155,14 +156,9 @@ export default function LoginForm() {
 
       {/* Password Field */}
       <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <Label htmlFor="password" className="text-sm font-medium">
-            Password *
-          </Label>
-          <a href="/forgot-password" className="text-sm text-primary hover:underline">
-            Forgot password?
-          </a>
-        </div>
+        <Label htmlFor="password" className="text-sm font-medium">
+          Password *
+        </Label>
         <div className="relative">
           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
           <Input
@@ -199,6 +195,13 @@ export default function LoginForm() {
             {errors.password}
           </motion.p>
         )}
+      </div>
+
+      {/* Forgot Password Link */}
+      <div className="text-right text-sm">
+        <Link href="/forgot-password" className="font-medium text-primary hover:underline">
+          Forgot password?
+        </Link>
       </div>
 
       {/* Submit Button */}
