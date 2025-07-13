@@ -1,15 +1,15 @@
-import SignupForm from "@/components/signup-form"
+import LoginForm from "@/components/login-form"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Sign Up - Create Your Account | Relative",
-  description: "Create your Relative account and start optimizing your workflows today.",
+  title: "Sign In - Access Your Account | Relative",
+  description: "Sign in to your Relative account and continue optimizing your workflows.",
 }
 
-export default function SignupPage() {
+export default function LoginPage() {
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
@@ -23,19 +23,19 @@ export default function SignupPage() {
           </Button>
         </div>
 
-        {/* Signup Form */}
-        <div className="bg-card border rounded-lg p-8 shadow-sm py-4">
+        {/* Login Form */}
+        <div className="bg-card border rounded-lg p-8 shadow-sm">
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-semibold tracking-tight">Create Account</h1>
-            <p className="text-muted-foreground mt-2">Get started with your free account</p>
+            <h1 className="text-2xl font-semibold tracking-tight">Welcome Back</h1>
+            <p className="text-muted-foreground mt-2">Sign in to your account</p>
           </div>
 
-          <SignupForm />
+          <LoginForm />
 
           <div className="mt-6 text-center text-sm">
-            <span className="text-muted-foreground">Already have an account? </span>
-            <Link href="/login" className="text-primary hover:underline font-medium">
-              Sign in
+            <span className="text-muted-foreground">Don't have an account? </span>
+            <Link href="/signup" className="text-primary hover:underline font-medium">
+              Sign up
             </Link>
           </div>
         </div>

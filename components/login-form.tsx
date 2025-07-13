@@ -7,22 +7,16 @@ import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Eye, EyeOff, Mail, User, Lock, AlertCircle, CheckCircle } from "lucide-react"
+import { Eye, EyeOff, Mail, Lock, AlertCircle, CheckCircle } from "lucide-react"
 
 interface FormData {
-  fullName: string
   email: string
   password: string
-  confirmPassword: string
-  // Removed terms: boolean
 }
 
 interface FormErrors {
-  fullName?: string
   email?: string
   password?: string
-  confirmPassword?: string
-  // Removed terms?: string
 }
 
 // Google Icon Component
@@ -47,27 +41,19 @@ const GoogleIcon = () => (
   </svg>
 )
 
-export default function SignupForm() {
+export default function LoginForm() {
   const [formData, setFormData] = useState<FormData>({
-    fullName: "",
     email: "",
     password: "",
-    confirmPassword: "",
-    // Removed terms: false,
   })
 
   const [errors, setErrors] = useState<FormErrors>({})
   const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {}
-
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = "Full name is required"
-    }
 
     if (!formData.email.trim()) {
       newErrors.email = "Email is required"
@@ -77,20 +63,7 @@ export default function SignupForm() {
 
     if (!formData.password) {
       newErrors.password = "Password is required"
-    } else if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters"
     }
-
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "Please confirm your password"
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match"
-    }
-
-    // Removed terms validation
-    // if (!formData.terms) {
-    //   newErrors.terms = "You must accept the terms and conditions"
-    // }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -112,18 +85,14 @@ export default function SignupForm() {
     // Reset form after success
     setTimeout(() => {
       setFormData({
-        fullName: "",
         email: "",
         password: "",
-        confirmPassword: "",
-        // Removed terms: false,
       })
       setIsSubmitted(false)
     }, 3000)
   }
 
   const handleInputChange = (field: keyof FormData, value: string) => {
-    // Changed type of value to string
     setFormData((prev) => ({ ...prev, [field]: value }))
     // Clear error when user starts typing
     if (errors[field]) {
@@ -131,9 +100,9 @@ export default function SignupForm() {
     }
   }
 
-  const handleGoogleSignup = () => {
-    // Handle Google signup logic here
-    console.log("Google signup clicked")
+  const handleGoogleLogin = () => {
+    // Handle Google login logic here
+    console.log("Google login clicked")
   }
 
   if (isSubmitted) {
@@ -146,44 +115,14 @@ export default function SignupForm() {
         <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 0.6 }}>
           <CheckCircle className="size-16 text-green-500" />
         </motion.div>
-        <h3 className="text-xl font-semibold">Account Created Successfully!</h3>
-        <p className="text-muted-foreground">Welcome to Relative! Please check your email to verify your account.</p>
+        <h3 className="text-xl font-semibold">Login Successful!</h3>
+        <p className="text-muted-foreground">Welcome back! Redirecting to your dashboard...</p>
       </motion.div>
     )
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {/* Full Name Field */}
-      <div className="space-y-2">
-        <Label htmlFor="fullName" className="text-sm font-medium">
-          Full Name *
-        </Label>
-        <div className="relative">
-          <User className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-          <Input
-            id="fullName"
-            type="text"
-            value={formData.fullName}
-            onChange={(e) => handleInputChange("fullName", e.target.value)}
-            className={`pl-10 transition-all duration-200 ${
-              errors.fullName ? "border-red-500 focus-visible:ring-red-500" : ""
-            }`}
-            placeholder="John Doe"
-          />
-        </div>
-        {errors.fullName && (
-          <motion.p
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-sm text-red-500 flex items-center gap-1"
-          >
-            <AlertCircle className="size-3" />
-            {errors.fullName}
-          </motion.p>
-        )}
-      </div>
-
       {/* Email Field */}
       <div className="space-y-2">
         <Label htmlFor="email" className="text-sm font-medium">
@@ -216,9 +155,14 @@ export default function SignupForm() {
 
       {/* Password Field */}
       <div className="space-y-2">
-        <Label htmlFor="password" className="text-sm font-medium">
-          Password *
-        </Label>
+        <div className="flex items-center justify-between">
+          <Label htmlFor="password" className="text-sm font-medium">
+            Password *
+          </Label>
+          <a href="/forgot-password" className="text-sm text-primary hover:underline">
+            Forgot password?
+          </a>
+        </div>
         <div className="relative">
           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
           <Input
@@ -257,61 +201,6 @@ export default function SignupForm() {
         )}
       </div>
 
-      {/* Confirm Password Field */}
-      <div className="space-y-2">
-        <Label htmlFor="confirmPassword" className="text-sm font-medium">
-          Confirm Password *
-        </Label>
-        <div className="relative">
-          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-          <Input
-            id="confirmPassword"
-            type={showConfirmPassword ? "text" : "password"}
-            value={formData.confirmPassword}
-            onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
-            className={`pl-10 pr-10 transition-all duration-200 ${
-              errors.confirmPassword ? "border-red-500 focus-visible:ring-red-500" : ""
-            }`}
-            placeholder="••••••••"
-          />
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-          >
-            {showConfirmPassword ? (
-              <EyeOff className="size-4 text-muted-foreground" />
-            ) : (
-              <Eye className="size-4 text-muted-foreground" />
-            )}
-          </Button>
-        </div>
-        {errors.confirmPassword && (
-          <motion.p
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-sm text-red-500 flex items-center gap-1"
-          >
-            <AlertCircle className="size-3" />
-            {errors.confirmPassword}
-          </motion.p>
-        )}
-      </div>
-
-      {/* Agreement Text */}
-      <p className="text-sm text-muted-foreground text-center">
-        By creating an account, you agree to our{" "}
-        <a href="/terms" className="underline hover:text-primary">
-          Terms of Service
-        </a>{" "}
-        and{" "}
-        <a href="/privacy" className="underline hover:text-primary">
-          Privacy Policy
-        </a>
-      </p>
-
       {/* Submit Button */}
       <motion.div
         whileHover={{ scale: 1.02 }}
@@ -326,22 +215,22 @@ export default function SignupForm() {
                 transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
                 className="size-4 border-2 border-current border-t-transparent rounded-full mr-2"
               />
-              Creating Account...
+              Signing In...
             </>
           ) : (
-            "Create Account"
+            "Sign In"
           )}
         </Button>
       </motion.div>
 
       {/* Refined Or separator */}
-      <div className="relative flex items-center py-14p]4].5x.5.5x">
+      <div className="relative flex items-center py-4">
         <div className="flex-grow border-t border-border" />
         <span className="mx-4 text-sm text-muted-foreground bg-card px-2">OR</span>
         <div className="flex-grow border-t border-border" />
       </div>
 
-      {/* Sign up with Google Button */}
+      {/* Sign in with Google Button */}
       <motion.div
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
@@ -350,11 +239,11 @@ export default function SignupForm() {
         <Button
           type="button"
           variant="outline"
-          onClick={handleGoogleSignup}
+          onClick={handleGoogleLogin}
           className="w-full flex items-center justify-center gap-3 h-11 border-border hover:bg-accent hover:text-accent-foreground bg-transparent"
         >
           <GoogleIcon />
-          Sign up with Google
+          Sign in with Google
         </Button>
       </motion.div>
     </form>
